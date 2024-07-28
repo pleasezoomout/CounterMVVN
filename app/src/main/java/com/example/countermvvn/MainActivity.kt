@@ -31,7 +31,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             CounterMVVNTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    TheCounterApp(modifier = Modifier.padding(innerPadding))
+                    TheCounterApp(
+                        modifier = Modifier.padding(innerPadding),
+                        viewModel = CounterViewModel())
                 }
             }
         }
@@ -40,16 +42,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun TheCounterApp(modifier: Modifier = Modifier) {
-    val count = remember { mutableStateOf(0) }
-
-    fun increment(){
-        count.value++
-    }
-
-    fun decrement(){
-        count.value--
-    }
+fun TheCounterApp(modifier: Modifier = Modifier, viewModel: CounterViewModel) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -58,7 +51,7 @@ fun TheCounterApp(modifier: Modifier = Modifier) {
     ) {
         
         Text(
-            text = "Count: ${count.value}",
+            text = "Count: ${viewModel.count.value}",
             fontSize = MaterialTheme.typography.headlineMedium.fontSize,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
@@ -66,34 +59,15 @@ fun TheCounterApp(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.padding(16.dp))
 
-
         Row(){
             
-            Button(onClick = { increment() }) {
+            Button(onClick = { viewModel.increment()}) {
                 Text(text = "Increment")
             }
 
-            Button(onClick = { decrement() }) {
+            Button(onClick = { viewModel.decrement() }) {
                 Text(text = "Decrement")
             }
-
-
-
         }
-
-
-
-
-
-    }
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun TheCounterAppPreview() {
-    CounterMVVNTheme {
-        TheCounterApp()
     }
 }
